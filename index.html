@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YouTube upload feed example</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <h1>YouTube upload feed example:</h1>
+        <p>
+            Will fetch latest 10 videos and display them all using iframes
+            <br/>
+            Feel free to use this code or improve upon it!
+        </p>
+        <i>Made with &lt;3 by Skyla!</i>
+        <hr/>
+        <noscript>Sorry, this page makes use of JavaScript to function, please enable it and refresh!</noscript>
+    </body>
+
+    <!-- Script to fetch and fill in videos on page -->
+    <script>
+        var apiUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCF0Sr35aWFmdrbnXPF7KXfw'; // Replace ending part with your channel ID
+        var $baseFrame = $('<iframe width="600" height="340" frameborder="0" allowfullscreen></iframe>');
+
+        $.getJSON('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(apiUrl), function(data) {
+            for (var x = 0; x < data.items.length; x++) {
+                var video = data.items[x];
+                var id = video.link.substr(video.link.indexOf('=') + 1);
+                
+                // Not really required, just like the idea of it listing its title and upload date also
+                $('body').append(
+                    $('<h2></h2>').text(video.title),
+                    $('<p></p>').text(video.pubDate),
+                );
+
+                // Make duplicate iframe with video and append to listing
+                $baseFrame
+                    .attr('src', 'https://youtube.com/embed/' + id + '?showinfo=0&rel=0')
+                    .clone()
+                    .appendTo('body');
+            }
+        });
+    </script>
+</html>
