@@ -20,6 +20,12 @@
 
     <!-- Script to fetch and fill in videos on page -->
     <script>
+        function formatText(text) {
+            var temp = document.createElement('div');
+            temp.innerHTML = text;
+            return temp.textContent || temp.innerText;
+        }
+        
         var apiUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCF0Sr35aWFmdrbnXPF7KXfw'; // Replace ending part with your channel ID
         var $baseFrame = $('<iframe width="600" height="340" frameborder="0" allowfullscreen></iframe>');
 
@@ -30,7 +36,7 @@
                 
                 // Not really required, just like the idea of it listing its title and upload date also
                 $('body').append(
-                    $('<h2></h2>').text(video.title),
+                    $('<h2></h2>').text(formatText(video.title)),
                     $('<p></p>').text(video.pubDate),
                 );
 
